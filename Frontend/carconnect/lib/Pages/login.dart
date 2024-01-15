@@ -1,9 +1,10 @@
-import 'dart:convert';
-
-import 'package:carconnect/Constants/api.dart';
+import 'package:carconnect/Constants/auth_api.dart';
+import 'package:carconnect/Pages/homepage.dart';
+import 'package:carconnect/models/models.dart';
+import 'package:carconnect/models/user_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -16,25 +17,25 @@ class _LoginPageState extends State<LoginPage> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
-  logIn(
-      {String username = "",
-      String password = "",
-      required BuildContext context}) async {
-    try {
-      http.Response response = await http.post(Uri.parse("${api}api/signin/"),
-          headers: <String, String>{
-            'content-type': 'application/json; charset=utf-8'
-          },
-          body: jsonEncode(
-              <String, dynamic>{'username': username, 'password': password}));
-      if (response.statusCode == 201) {
-      } else {
-        print(response.statusCode);
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
+  // logIn(
+  //     {String username = "",
+  //     String password = "",
+  //     required BuildContext context}) async {
+  //   try {
+  //     http.Response response = await http.post(Uri.parse("${api}api/signin/"),
+  //         headers: <String, String>{
+  //           'content-type': 'application/json; charset=utf-8'
+  //         },
+  //         body: jsonEncode(
+  //             <String, dynamic>{'username': username, 'password': password}));
+  //     if (response.statusCode == 201) {
+  //     } else {
+  //       print(response.statusCode);
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   @override
   void dispose() {
@@ -132,12 +133,31 @@ class _LoginPageState extends State<LoginPage> {
                     borderRadius: BorderRadius.circular(40),
                   ),
                   child: GestureDetector(
-                    onTap: () {
-                      logIn(
-                        username: usernameController.text,
-                        password: passwordController.text,
-                        context: context,
-                      );
+                    onTap: () async {
+                      var authRes = await userAuth(
+                          usernameController.text, passwordController.text);
+                      if (authRes.runtimeType == String) {
+                        // ignore: use_build_context_synchronously
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  height: 200,
+                                  width: 250,
+                                  decoration: BoxDecoration(),
+                                  child: Text(authRes),
+                                ),
+                              );
+                            });
+                      } else if (authRes.runtimeType == User) {
+                        User user = authRes;
+                        // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
+                        context.read<UserCubit>().emit(user);
+                      }
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const HomePage()));
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
