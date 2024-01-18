@@ -5,9 +5,9 @@ import 'package:carconnect/Constants/constants.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:http/http.dart' as http;
 
-const String api = 'http://180.180.3.70:8000';
+const String api = 'http://160.160.10.67:8000';
 
-Future<dynamic> userAuth(String username, String password) async {
+Future<dynamic> userAuth(String username, String password, context) async {
   Map body = {
     "username": username,
     // "email": "",
@@ -16,41 +16,45 @@ Future<dynamic> userAuth(String username, String password) async {
   var url = Uri.parse("$api/dj-rest-auth/login/");
   var res = await http.post(url, body: body);
 
-  print(res.body);
-  print(res.statusCode);
+  print("Body ${res.body}");
+  print("Res1 ${res.statusCode}");
   if (res.statusCode == 200) {
-    Map json = jsonDecode(res.body);
-    String token = json["key"];
-    print(token);
-    await Hive.initFlutter();
-    var box = await Hive.openBox(tokenBox);
-    box.put("token", token);
-    await getUser(token);
-    User? user = await getUser(token);
-    return user;
+    try {
+      // Initialize Hive
+      await Hive.initFlutter();
+
+      Map json = jsonDecode(res.body);
+      String token = json["key"];
+      print(token);
+
+      // Open the box after initializing Hive
+      var box = await Hive.openBox(tokenBox);
+      box.put("token", token);
+
+      await getUser(token);
+      User? user = await getUser(token);
+      print("done user");
+      
+      return user;
+    } catch (e) {
+      print("problem $e");
+    }
   } else {
-    Map json = jsonDecode(res.body);
-    print(json);
-    if (json.containsKey("username")) {
-      return json["username"][0];
-    }
-    if (json.containsKey("password")) {
-      return json["password"][0];
-    }
-    if (json.containsKey("non_field_errors")) {
-      return json["non_field_errors"][0];
-    }
+    print("Error getting user data - Status Code: ${res.statusCode}");
+    print("Response Body: ${res.body}");
+    return null;
   }
 }
 
 Future<User?> getUser(String token) async {
   var url = Uri.parse("$api/dj-rest-auth/user/");
-  var res = await http.get(url, headers: {
+  var resp = await http.get(url, headers: {
     "Authorization": "Token $token",
   });
-  if (res.statusCode == 200) {
-    print(res.statusCode);
-    var json = jsonDecode(res.body);
+  if (resp.statusCode == 200) {
+    print(resp.statusCode);
+    var json = jsonDecode(resp.body);
+    print(resp);
     User user = User.fromJson(json);
     user.token = token;
     return user;
