@@ -5,7 +5,7 @@ import 'package:carconnect/Constants/constants.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:http/http.dart' as http;
 
-const String api = 'http://160.160.10.67:8000';
+const String api = 'http://192.168.34.16:8000';
 
 Future<dynamic> userAuth(String username, String password, context) async {
   Map body = {
@@ -34,7 +34,7 @@ Future<dynamic> userAuth(String username, String password, context) async {
       await getUser(token);
       User? user = await getUser(token);
       print("done user");
-      
+
       return user;
     } catch (e) {
       print("problem $e");

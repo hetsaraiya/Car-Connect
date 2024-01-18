@@ -130,6 +130,10 @@ class _HomePageState extends State<HomePage> {
   //     polylines[id] = poly;
   //   });
   // }
+
+  var apiKey = "kBEVbZm3gsQjxw9AxkAwjUbICySUacls";
+  String origin = "Ldrp-itr Gandhinagar gujarat india";
+  String destination = "ahmedabad gujarat india";
   @override
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
@@ -146,25 +150,21 @@ class _HomePageState extends State<HomePage> {
         )),
         child: Container(
             padding: const EdgeInsets.all(50),
-            child: Consumer(
-              builder: (context, mapState, child) {
-                return FlutterMap(
-                  options: const MapOptions(
-                    // center: mapState,
-                    zoom: 13.0,
-                  ),
-                  children: [
-                    TileLayer(
-                      urlTemplate:
-                          'https://www.mapquestapi.com/staticmap/v5/map?key=kBEVbZm3gsQjxw9AxkAwjUbICySUacls&center={center}&zoom={zoom}&size=600,400',
-                      additionalOptions: const {
-                        'center': '37.7749,-122.4194',
-                        'zoom': '13',
-                      },
-                    ),
-                  ],
-                );
-              },
+            child: FlutterMap(
+              options: const MapOptions(backgroundColor: Colors.black),
+              children: [
+                TileLayer(
+                  urlTemplate:
+                      // ignore: unnecessary_brace_in_string_interps
+                      // https://www.mapquestapi.com/staticmap/v5/map?key=kBEVbZm3gsQjxw9AxkAwjUbICySUacls&center={center}&zoom={zoom}&size=600,400
+                      // https://www.mapquestapi.com/directions/v2/route?key=$apiKey&from=$origin&to=$destination
+                      'https://www.mapquestapi.com/staticmap/v5/map?key=kBEVbZm3gsQjxw9AxkAwjUbICySUacls&center={center}&zoom={zoom}&size=600,400',
+                  additionalOptions: const {
+                    'center': '23.238855, 72.638193',
+                    'zoom': '13',
+                  },
+                ),
+              ],
             )),
       ),
     );
