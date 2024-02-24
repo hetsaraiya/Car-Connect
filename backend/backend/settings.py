@@ -24,8 +24,15 @@ SECRET_KEY = "django-insecure-z7b3vpd5u&5uy7lf1dz)m71jwzj-j#u-^x*_t&l!xtdic@##da
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*', "https://8000-monospace-car-connect-1708800829495.cluster-22qpi2wzsjc4utjzyqn2yu6ar6.cloudworkstations.dev"]
 
+CORS_ALLOWED_ORIGINS = [
+    'https://example.com',
+    'http://localhost:3000',
+    'https://8000-monospace-car-connect-1708800829495.cluster-22qpi2wzsjc4utjzyqn2yu6ar6.cloudworkstations.dev',
+    # Add more origins as needed
+]
+CSRF_TRUSTED_ORIGINS = ['https://8000-monospace-car-connect-1708800829495.cluster-22qpi2wzsjc4utjzyqn2yu6ar6.cloudworkstations.dev']
 
 # Application definition
 
@@ -61,6 +68,8 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "backend.urls"
