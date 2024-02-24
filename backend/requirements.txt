@@ -5,3 +5,4 @@ dj-rest-auth==5.0.2
 django-cors-headers==4.3.1
 django-phonenumber-field==7.3.0
 jsonschema==4.21.1
+phonenumbers
