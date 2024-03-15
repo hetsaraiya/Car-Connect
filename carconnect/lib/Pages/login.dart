@@ -1,12 +1,19 @@
 import 'package:carconnect/Constants/auth_api.dart';
+<<<<<<< HEAD
 import 'package:carconnect/Pages/services.dart';
+=======
+import 'package:carconnect/Pages/homepage.dart';
+>>>>>>> origin/main
 import 'package:carconnect/models/models.dart';
 import 'package:carconnect/models/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -158,7 +165,12 @@ class _LoginPageState extends State<LoginPage> {
                           // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
                           context.read<UserCubit>().emit(user);
                         }
+<<<<<<< HEAD
                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Services()));
+=======
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const HomePage()));
+>>>>>>> origin/main
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),

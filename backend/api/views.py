@@ -1,6 +1,7 @@
 import json
 from django.http import HttpResponse
 from django.shortcuts import render
+<<<<<<< HEAD
 import requests
 import json
 from django.http import JsonResponse
@@ -9,12 +10,16 @@ from django.core import serializers as serializer
 from .serializers import *
 from django.contrib import messages
 from geopy.geocoders import MapQuest
+=======
+from django.contrib import messages
+>>>>>>> origin/main
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
 from django.contrib.auth.models import User
 from .models import *
 # Create your views here.
 
+<<<<<<< HEAD
 # https://www.mapquestapi.com/geocoding/v1/reverse?key=KEY&location=30.333472,-81.470448&includeRoadMetadata=true&includeNearestIntersection=true
 
 KEY = "Your_API_KEY"
@@ -45,19 +50,30 @@ def get_address(latitude, longitude):
         print(f"Error during reverse geocoding: {e}")
         return "Unknown"
 
+=======
+>>>>>>> origin/main
 
 @csrf_exempt
 def signUp(request):
     if request.method == "POST":
         username = request.POST.get('username')
+<<<<<<< HEAD
         name = request.POST.get('name')
+=======
+        name = request.POST.get('fname')
+>>>>>>> origin/main
         contact_number = request.POST.get('contact_number')
         email = request.POST.get('email')
         gender = request.POST.get('gender')
         presenet_loc_longitude = request.POST.get('presenet_loc_longitude')
         presenet_loc_latitude = request.POST.get('presenet_loc_latitude')
+<<<<<<< HEAD
         password = request.POST.get('password1')
         confirmPassword = request.POST.get('password2')
+=======
+        password = request.POST.get('password')
+        confirmPassword = request.POST.get('Confirm Password')
+>>>>>>> origin/main
         
         if User.objects.filter(username=username):
             messages.error(request, "Username already exist! Please try some other username.")
@@ -67,18 +83,30 @@ def signUp(request):
             messages.error(request, "Email Already Registered!!")
             return HttpResponse(json.dumps({"msg": " your details updated successfully."}),content_type="application/json",)
         
+<<<<<<< HEAD
         # if len(username)>20:
         #     messages.error(request, "Username must be under 20 charcters!!")
+=======
+        if len(username)>20:
+            messages.error(request, "Username must be under 20 charcters!!")
+>>>>>>> origin/main
             
         
         if password != confirmPassword:
             messages.error(request, "Passwords didn't matched!!")
         
 
+<<<<<<< HEAD
         myuser=User.objects.create_user(username=username, email=email, password=password)
         myuser.name = name
         myuser.email = email
         myuser.contact_number = "+91" + contact_number
+=======
+        myuser=User.objects.create_user(username, email, password)
+        myuser.name = name
+        myuser.email = email
+        myuser.contact_number = contact_number
+>>>>>>> origin/main
         myuser.gender = gender
         myuser.presenet_loc_longitude = presenet_loc_longitude
         myuser.presenet_loc_latitude = presenet_loc_latitude
@@ -112,6 +140,7 @@ def signout(request):
     messages.success(request, "Logged Out Successfully!!")
     return HttpResponse(json.dumps({"msg": " your details updated successfully."}),content_type="application/json",)
 
+<<<<<<< HEAD
 @csrf_exempt
 def makeRequest(request):
     if request.method == "POST":
@@ -163,3 +192,7 @@ def getRequestData(request):
     else:
         return HttpResponse(json.dumps({"msg": "Bad Request"}))
     
+=======
+# @csrf_exempt
+# def makeRequest(request):
+>>>>>>> origin/main

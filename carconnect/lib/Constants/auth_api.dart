@@ -5,9 +5,13 @@ import 'package:carconnect/Constants/constants.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:http/http.dart' as http;
 
+<<<<<<< HEAD
 const String api = 'http://192.168.231.138:8000';
 // const String api = 'http://127.0.0.1:8000';
 // const String api = 'https://carconnectbackend.onrender.com';
+=======
+const String api = 'http://192.168.34.16:8000';
+>>>>>>> origin/main
 
 Future<dynamic> userAuth(String username, String password, context) async {
   Map body = {
