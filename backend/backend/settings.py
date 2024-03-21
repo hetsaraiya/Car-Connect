@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from rest_framework.authentication import TokenAuthentication
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -106,14 +108,18 @@ DATABASES = {
     }
 }
 
+AUTHENTICATION_BACKENDS = [
+    'allauth.account.auth_backends.AuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 
-DEFAULT_AUTHENTICATION_CLASSES: [
-        'rest_framework.authentication.TokenAuthentication',
-]
+# DEFAULT_AUTHENTICATION_CLASSES: [
+#         'rest_framework.authentication.TokenAuthentication',
+# ] # type: ignore
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -170,4 +176,15 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = "username"
 REST_AUTH = {
     "LOGIN_SERIALIZER" : "api.serializers.NewLoginSerializer",
     "REGISTER_SERIALIZER": "api.serializers.NewRegisterSerializer",
+}
+
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'users.serializers.CustomUserDetailsSerializer',
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication', # for browser
+        'rest_framework.authentication.TokenAuthentication', # for fluttrt
+    ]
 }

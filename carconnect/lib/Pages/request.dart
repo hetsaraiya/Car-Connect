@@ -1,15 +1,13 @@
 import 'package:carconnect/Constants/auth_api.dart';
+import 'package:carconnect/Constants/getloc.dart';
 import 'package:carconnect/models/request.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/widgets.dart';
 
 class AvailableRides extends StatefulWidget {
-  final double? lat;
-  final double? long;
-  const AvailableRides({super.key, this.lat, this.long});
+  const AvailableRides({super.key});
 
   @override
   // ignore: no_logic_in_create_state, unnecessary_this
@@ -18,27 +16,10 @@ class AvailableRides extends StatefulWidget {
 
 class _AvailableRidesState extends State<AvailableRides> {
   String locationMessage = "New available";
-  double? lat;
-  double? long;
   List<Request> myreq = [];
   bool isLoading = true;
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController destinationController = TextEditingController();
-
-  void _liveLocation() {
-    LocationSettings locationSettings = const LocationSettings(
-        accuracy: LocationAccuracy.high, distanceFilter: 10);
-
-    Geolocator.getPositionStream(locationSettings: locationSettings)
-        .listen((Position position) {
-      lat = position.latitude;
-      long = position.longitude;
-      setState(() {
-        locationMessage = "longitude: $long, latitude: $lat";
-      });
-    });
-    print(locationMessage);
-  }
 
   Future<void> availARide() async {
     final url = Uri.parse("$api/api/createreq/");
@@ -65,7 +46,7 @@ class _AvailableRidesState extends State<AvailableRides> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _liveLocation();
+    liveLocation();
   }
 
   @override

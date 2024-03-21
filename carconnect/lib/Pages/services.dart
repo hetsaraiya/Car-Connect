@@ -1,43 +1,27 @@
+import "package:carconnect/Constants/getloc.dart";
 import "package:carconnect/Pages/request.dart";
 import "package:carconnect/Pages/rides.dart";
+import "package:carconnect/models/models.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:flutter/widgets.dart";
-import "package:geolocator/geolocator.dart";
+import "package:google_fonts/google_fonts.dart";
 
 class Services extends StatefulWidget {
-  const Services({super.key});
+  final User user;
+  const Services({super.key, required this.user});
 
   @override
   State<Services> createState() => _ServicesState();
 }
 
 class _ServicesState extends State<Services> {
-  late double lat;
-  late double long;
-  Future<Position> _getCurrentLocation() async {
-    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return Future.error("location desabled");
-    }
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error("Location permission denied");
-      }
-    }
-    if (permission == LocationPermission.deniedForever) {
-      return Future.error("Location permission");
-    }
-    return await Geolocator.getCurrentPosition();
-  }
-
+  User? user;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _getCurrentLocation().then((value) {
+    getCurrentLocation().then((value) {
       lat = value.latitude;
       long = value.longitude;
     });
@@ -51,7 +35,20 @@ class _ServicesState extends State<Services> {
           child: Column(
             children: [
               const SizedBox(
-                height: 100,
+                height: 30,
+              ),
+              SizedBox(
+                height: 70,
+                child: Text(
+                  "Welcome  ${widget.user.name}",
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.acme(
+                      textStyle: const TextStyle(
+                          color: Colors.white,
+                          letterSpacing: 1,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30)),
+                ),
               ),
               Center(
                 child: SizedBox(
@@ -64,7 +61,7 @@ class _ServicesState extends State<Services> {
                     child: Text("Get A Ride"),
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const Rides()));
+                          builder: (context) => Rides(user: widget.user,)));
                     },
                   ),
                 ),
@@ -83,7 +80,7 @@ class _ServicesState extends State<Services> {
                     child: const Text("Give A Ride"),
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => AvailableRides(lat: lat, long: long, )));
+                          builder: (context) => const AvailableRides()));
                     },
                   ),
                 ),

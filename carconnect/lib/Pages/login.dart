@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -157,8 +156,11 @@ class _LoginPageState extends State<LoginPage> {
                           User user = authRes;
                           // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
                           context.read<UserCubit>().emit(user);
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => Services(
+                                    user: user,
+                                  )));
                         }
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Services()));
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),

@@ -19,8 +19,9 @@ class User {
     return User(
       id: json["pk"],
       username: json["username"],
+      email : json["email"],
       contact_number: json["contact_number"],
-      name: json["name"],
+      name: json["username"],
     );
   }
 }

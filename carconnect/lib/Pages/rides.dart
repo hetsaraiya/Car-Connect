@@ -1,19 +1,22 @@
-
 import 'dart:convert';
 import 'package:carconnect/Constants/auth_api.dart';
+import 'package:carconnect/models/models.dart';
 import 'package:carconnect/models/request.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:carconnect/widgets/request_container.dart';
 import 'package:flutter/material.dart';
 
 class Rides extends StatefulWidget {
-  const Rides({Key? key});
+  final User user;
+  const Rides({Key? key, required this.user});
 
   @override
   State<Rides> createState() => _RidesState();
 }
 
 class _RidesState extends State<Rides> {
+  User? user;
   List<Request> rides = [];
   bool isLoading = true;
   @override
@@ -21,6 +24,40 @@ class _RidesState extends State<Rides> {
     super.initState();
     fetchRides();
   }
+
+  // Future<void> fetchRides() async {
+  //   final url = Uri.parse(api + "/api/getridesdata/");
+
+  //   try {
+  //     final response = await http.get(url);
+  //     var data = json.decode(response.body);
+  //     print("requested for ride");
+  //     print(response.statusCode);
+  //     print(response.body);
+  //     if (response.statusCode == 200) {
+  //       data.forEach((ride) {
+  //         if (ride['username'] != widget.user.username) {
+  //           Request r = Request(
+  //             user: ride['user'],
+  //             userlocation: ride["userlocation"],
+  //             userDestination: ride['userDestination'],
+  //           );
+  //           rides.add(r);
+  //         }
+  //       });
+
+  //       print(rides.length);
+  //       print(rides);
+  //       setState(() {
+  //         isLoading = false;
+  //       });
+  //     } else {
+  //       print('Failed to fetch rides: ${response.statusCode}');
+  //     }
+  //   } catch (e) {
+  //     print('Error fetching rides: $e');
+  //   }
+  // }
 
   Future<void> fetchRides() async {
     final url = Uri.parse(api + "/api/getridesdata/");
@@ -80,17 +117,35 @@ class _RidesState extends State<Rides> {
                   ? const Center(
                       child: CircularProgressIndicator(),
                     )
-                  : Expanded(
-                      child: ListView(
-                      shrinkWrap: true,
-                      children: rides
-                          .map((e) => RequestContainer(
-                                user: e.user,
-                                userlocation: e.userlocation,
-                                userDestination: e.userDestination,
-                              ))
-                          .toList(),
-                    ))
+                  : rides.isEmpty
+                      ? Container(
+                          padding: const EdgeInsets.only(top: 150),
+                          width: 300,
+                          child: Text(
+                            "No Rides Available For You",
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.acme(
+                                textStyle: const TextStyle(
+                                    color: Colors.black,
+                                    letterSpacing: 1,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 30)),
+                          ),
+                        )
+                      : Expanded(
+                          child: ListView(
+                            shrinkWrap: true,
+                            children: rides
+                                .map(
+                                  (e) => RequestContainer(
+                                    user: e.user,
+                                    userlocation: e.userlocation,
+                                    userDestination: e.userDestination,
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        ),
             ],
           ),
         ),
