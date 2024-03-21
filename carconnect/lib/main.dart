@@ -27,11 +27,7 @@ class _CarConnectState extends State<CarConnect> {
         title: 'Sage',
         theme: ThemeData(
           // useMaterial3: true,
-<<<<<<< HEAD
           scaffoldBackgroundColor: const Color.fromARGB(255, 32, 5, 152),
-=======
-          scaffoldBackgroundColor: Color.fromARGB(255, 32, 5, 152),
->>>>>>> origin/main
         ),
         home: const WelcomePage(),
       ),
