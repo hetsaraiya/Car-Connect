@@ -139,11 +139,6 @@ def makeRequest(request):
     
     else:
         return HttpResponse(json.dumps({"msg": "Bad Request"}))
-@csrf_exempt
-def test(request):
-    if request.method == "GET":
-        return HttpResponse(json.dumps({"msg" : "New Msg"}))
-    
 
 @csrf_exempt
 def getRequestData(request):
