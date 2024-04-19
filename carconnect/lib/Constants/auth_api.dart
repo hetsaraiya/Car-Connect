@@ -5,7 +5,9 @@ import 'package:carconnect/Constants/constants.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:http/http.dart' as http;
 
-const String api = 'http://192.168.121.23:8000';
+// const String api = 'http://192.168.121.23:8000';
+
+const String api = "http://15.206.179.110";
 
 // const String api = 'http://127.0.0.1:8000';
 // const String api = 'https://carconnectbackend.onrender.com';
