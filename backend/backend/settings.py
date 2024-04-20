@@ -26,15 +26,12 @@ SECRET_KEY = "django-insecure-z7b3vpd5u&5uy7lf1dz)m71jwzj-j#u-^x*_t&l!xtdic@##da
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*', "https://8000-monospace-car-connect-1708800829495.cluster-22qpi2wzsjc4utjzyqn2yu6ar6.cloudworkstations.dev"]
+ALLOWED_HOSTS = ['*']
 
 CORS_ALLOWED_ORIGINS = [
-    'https://example.com',
     'http://localhost:3000',
-    'https://8000-monospace-car-connect-1708800829495.cluster-22qpi2wzsjc4utjzyqn2yu6ar6.cloudworkstations.dev',
-    # Add more origins as needed
 ]
-CSRF_TRUSTED_ORIGINS = ['https://8000-monospace-car-connect-1708800829495.cluster-22qpi2wzsjc4utjzyqn2yu6ar6.cloudworkstations.dev']
+CSRF_TRUSTED_ORIGINS = []
 
 # Application definition
 
@@ -66,6 +63,8 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",
     "django.middleware.common.CommonMiddleware",
     "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
@@ -79,7 +78,7 @@ ROOT_URLCONF = "backend.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": ['templates'],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -150,7 +149,7 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
+# https://docs.djangoproject.com/en/4.2/howtostatic-files/
 
 STATIC_URL = "static/"
 
@@ -188,3 +187,12 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication', # for fluttrt
     ]
 }
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static', 'assets'),
+    os.path.join(BASE_DIR, 'static', 'img'),
+]
