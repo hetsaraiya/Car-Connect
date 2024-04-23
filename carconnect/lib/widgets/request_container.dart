@@ -1,98 +1,61 @@
-// import 'package:flutter/material.dart';
-
-// // ignore: must_be_immutable
-// class RequestContainer extends StatelessWidget {
-//   final String name;
-//   final String prelon;
-//   final String prelat;
-//   final String deslat;
-//   final String deslon;
-//   final Function onPresss;
-//   final bool isDeleted;
-//   const RequestContainer(
-//       {Key? key,
-//       required this.name,
-//       required this.prelon,
-//       required this.prelat,
-//       required this.deslat,
-//       required this.deslon,
-//       required this.isDeleted,
-//       required this.onPresss})
-//       : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Padding(
-//         padding: const EdgeInsets.all(8),
-//         child: Container(
-//           width: double.infinity,
-//           height: 160,
-//           decoration: const BoxDecoration(
-//             color: Colors.cyan,
-//             borderRadius: BorderRadius.all(Radius.circular(4)),
-//           ),
-//           child: Padding(
-//             padding: const EdgeInsets.all(8),
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.center,
-//               children: [
-//                 Text(name),
-//                 Row(
-//                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                   children: [
-//                     Text(prelon),
-//                     const SizedBox(
-//                       width: 10,
-//                     ),
-//                     Text(prelat),
-//                   ],
-//                 ),
-//                 const SizedBox(
-//                   height: 30,
-//                 ),
-//                 Row(
-//                   children: [
-//                     const SizedBox(
-//                       width: 10,
-//                     ),
-//                     Text(deslon),
-//                     const SizedBox(
-//                       width: 10,
-//                     ),
-//                     Text(deslat),
-//                   ],
-//                 ),
-//                 Center(
-//                   child: IconButton(
-//                     icon: const Icon(Icons.delivery_dining),
-//                     onPressed: () => onPresss() ,
-//                   )
-//                 )
-//               ],
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
+import 'package:carconnect/Constants/auth_api.dart';
 import 'package:carconnect/Pages/booked.dart';
+import 'package:carconnect/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:http/http.dart' as http;
 
-class RequestContainer extends StatelessWidget {
-  final String user;
+class RequestContainer extends StatefulWidget {
+  final User user;
   final String userlocation;
   final String userDestination;
-
+  final String username;
+  final String contact_number;
   const RequestContainer({
-    Key? key,
+    super.key,
     required this.user,
     required this.userlocation,
     required this.userDestination,
-  }) : super(key: key);
+    required this.username,
+    required this.contact_number,
+  });
+
+  @override
+  State<RequestContainer> createState() => _RequestContainerState();
+}
+
+class _RequestContainerState extends State<RequestContainer> {
+  late String userlocation;
+  late String userDestination;
+  late String contact_number;
+  late String username;
+  User? user;
+
+  Future<void> hookUser(String username, int pk) async {
+    final url = Uri.parse(api + "/api/hookUser/");
+    Map body = {
+      "username": username,
+      "rider": (pk).toString(),
+    };
+    var res = await http.post(url, body: body);
+    print(res.body);
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => Confirmation(
+              user: widget.user,
+              contact_number: widget.contact_number,
+              username: widget.username,
+            )));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the fields with the values passed from the widget
+    userlocation = widget.userlocation;
+    userDestination = widget.userDestination;
+    user = widget.user;
+    username = widget.username;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +68,7 @@ class RequestContainer extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text('User: $user'),
+              Text('User: ${username}'),
               const SizedBox(height: 8),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -135,10 +98,7 @@ class RequestContainer extends StatelessWidget {
               ),
               ElevatedButton(
                 child: const Text('Book This Ride'),
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const Confirmation()));
-                },
+                onPressed: () => {hookUser(username, widget.user.id!)},
               )
             ],
           ),

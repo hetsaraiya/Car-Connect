@@ -30,6 +30,7 @@ class _ServicesState extends State<Services> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blueGrey,
       body: Container(
         child: SafeArea(
           child: Column(
@@ -56,12 +57,14 @@ class _ServicesState extends State<Services> {
                   width: 300,
                   child: OutlinedButton(
                     style: OutlinedButton.styleFrom(
-                      backgroundColor: Colors.green,
+                      backgroundColor: Colors.white70,
                     ),
                     child: Text("Get A Ride"),
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => Rides(user: widget.user,)));
+                          builder: (context) => Rides(
+                                user: widget.user,
+                              )));
                     },
                   ),
                 ),
@@ -75,12 +78,13 @@ class _ServicesState extends State<Services> {
                   width: 300,
                   child: OutlinedButton(
                     style: OutlinedButton.styleFrom(
-                      backgroundColor: Colors.green,
+                      backgroundColor: Colors.white70,
                     ),
                     child: const Text("Give A Ride"),
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const AvailableRides()));
+                          builder: (context) =>
+                              AvailableRides(user: widget.user)));
                     },
                   ),
                 ),

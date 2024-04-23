@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from rest_framework import generics
 from django.core import serializers as serializer
 from .serializers import *
+from rest_framework.authtoken.models import Token
 from django.contrib import messages
 from geopy.geocoders import MapQuest
 from django.contrib.auth import authenticate, login, logout
@@ -20,6 +21,7 @@ from .models import *
 
 # KEY = "Your_API_KEY"
 KEY = "kBEVbZm3gsQjxw9AxkAwjUbICySUacls"
+
 def get_address(latitude, longitude):
     try:
         response = requests.get(f"https://www.mapquestapi.com/geocoding/v1/reverse?key={KEY}&location={latitude},{longitude}&includeRoadMetadata=true&includeNearestIntersection=true")
@@ -63,11 +65,11 @@ def signUp(request):
         
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username already exist! Please try some other username.")
-            return HttpResponse(json.dumps({"msg": " your details updated successfully."}),content_type="application/json",)
+            return HttpResponse(json.dumps({"msg": " UserName Already Exists."}),content_type="application/json",)
         
         if User.objects.filter(email=email).exists():
             messages.error(request, "Email Already Registered!!")
-            return HttpResponse(json.dumps({"msg": " your details updated successfully."}),content_type="application/json",)
+            return HttpResponse(json.dumps({"msg": " Email Already In Use."}),content_type="application/json",)
         
         if password != confirmPassword:
             return HttpResponse(json.dumps({"msg": "Password and ConfirmPassword Are Not Equal"}),content_type="application/json")
@@ -99,12 +101,12 @@ def signIn(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
-            return HttpResponse(json.dumps({"msg": " your details updated successfully."}),content_type="application/json",)
+            return HttpResponse(json.dumps({"msg": " Logged In "}),content_type="application/json",)
         else:
             messages.error(request, "Bad Credentials!!")
-            return HttpResponse(json.dumps({"msg": " your details updated successfully."}),content_type="application/json",)
+            return HttpResponse(json.dumps({"msg": " Invalid Credentials "}),content_type="application/json",)
     
-    return HttpResponse(json.dumps({"msg": " your details updated successfully."}),content_type="application/json",)
+    return HttpResponse(json.dumps({"msg": " Invalid Request "}),content_type="application/json",)
 
 
 @csrf_exempt
@@ -126,16 +128,18 @@ def makeRequest(request):
         geolocator = MapQuest(api_key=KEY)
         destination_location = geolocator.geocode(destination)
         # isDeleted = request.POST.get("isDeleted")
+        new = ServiceRequest.objects.get(user=users.pk).exists()
+        print(new)
+        if not new:
+            servicerequest.user = users
+            servicerequest.presenet_loc_longitude = presenet_loc_longitude
+            servicerequest.presenet_loc_latitude = presenet_loc_latitude
+            servicerequest.destination_loc_longitude = destination_location.longitude
+            servicerequest.destination_loc_latitude = destination_location.latitude
+            # servicerequest.isDeleted = 
+            servicerequest.save()
 
-        servicerequest.user = users
-        servicerequest.presenet_loc_longitude = presenet_loc_longitude
-        servicerequest.presenet_loc_latitude = presenet_loc_latitude
-        servicerequest.destination_loc_longitude = destination_location.longitude
-        servicerequest.destination_loc_latitude = destination_location.latitude
-        # servicerequest.isDeleted = 
-        servicerequest.save()
-
-        return HttpResponse(json.dumps({"msg": "Ride availed"}))
+            return HttpResponse(json.dumps({"msg": "Ride availed"}))
     
     else:
         return HttpResponse(json.dumps({"msg": "Bad Request"}))
@@ -150,20 +154,52 @@ def getRequestData(request):
             riderLocation = get_address(ride.presenet_loc_latitude, ride.presenet_loc_longitude)
             riderDestination = get_address(ride.destination_loc_latitude, ride.destination_loc_longitude)
             ride_data = {
-                "user" : ride.user.name,
+                "username" : ride.user.name,
                 "username": ride.user.username,
                 "userlocation" : riderLocation,
                 "userDestination" : riderDestination,
+                "contact_number" : str(ride.user.contact_number),
             }
             rides.append(ride_data)
         return JsonResponse(rides, safe=False)
     else:
         return HttpResponse(json.dumps({"msg": "Bad Request"}))
     
-
 @csrf_exempt
 def dbDownload(request):
     if request.user.is_superuser:
-        # copy the database file to the static folder
         os.system("cp db.sqlite3 static/")
         return HttpResponse("<a href='/static/db.sqlite3' download>Download</a>")
+    
+@csrf_exempt
+def getData(request):
+    if request.method == "GET":
+        id = request.GET.get("id")
+        user = User.objects.get(pk=id)
+        token = Token.objects.get(user=user.pk)
+        response = {
+            "pk":user.pk,
+            "username": user.username,
+            "email": user.email,
+            "name": user.first_name + user.last_name,
+            "token": token.key,
+            "gender": user.gender,
+            "contact_number" : str(user.contact_number)
+        }
+        return HttpResponse(json.dumps(response))
+    else:
+        return HttpResponse(json.dumps({"msg" : "Invalid token"}))
+
+    
+@csrf_exempt
+def hookUser(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        rider_id = request.POST.get("rider")
+        user = User.objects.get(username=username)
+        rider = User.objects.get(pk=rider_id)
+        req = ServiceRequest.objects.get(user=user.pk)
+        req.rider = rider
+        return HttpResponse(json.dumps({"msg" : "Success"}))
+    else:
+        return HttpResponse(json.dumps({"msg" : "Bad request"}))

@@ -38,6 +38,8 @@ class _SignUpState extends State<SignUp> {
           'password2': confirmPasswordController.text,
         },
       );
+      print(Uri.parse(url));
+      print(response.body);
 
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
@@ -101,197 +103,198 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.blueGrey,
         body: Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(
-          gradient: LinearGradient(
-        colors: [Colors.purple, Colors.blueAccent],
-        begin: Alignment.bottomLeft,
-        end: Alignment.topRight,
-        stops: [0.4, 0.7],
-        tileMode: TileMode.repeated,
-      )),
-      child: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 80,
+          width: double.infinity,
+          // decoration: const BoxDecoration(
+          //     gradient: LinearGradient(
+          //   colors: [Colors.purple, Colors.blueAccent],
+          //   begin: Alignment.bottomLeft,
+          //   end: Alignment.topRight,
+          //   stops: [0.4, 0.7],
+          //   tileMode: TileMode.repeated,
+          // )),
+          child: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 80,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                    child: Text(
+                      "Please Enter SignUp Details...",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.acme(
+                          textStyle: const TextStyle(
+                              color: Colors.white,
+                              letterSpacing: 1,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 30)),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 70,
+                  ),
+                  SizedBox(
+                    width: 300,
+                    child: TextField(
+                      controller: usernameController,
+                      obscureText: false,
+                      decoration: const InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black),
+                          ),
+                          labelText: 'UserName',
+                          hintStyle: TextStyle(
+                              textBaseline: TextBaseline.alphabetic,
+                              color: Color.fromARGB(255, 134, 85, 85))),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  SizedBox(
+                    width: 300,
+                    child: TextField(
+                      controller: nameController,
+                      obscureText: false,
+                      decoration: const InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black),
+                          ),
+                          labelText: 'Name',
+                          hintStyle: TextStyle(
+                              textBaseline: TextBaseline.alphabetic,
+                              color: Color.fromARGB(255, 134, 85, 85))),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  SizedBox(
+                    width: 300,
+                    child: TextField(
+                      controller: contactNumberController,
+                      obscureText: false,
+                      decoration: const InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black),
+                          ),
+                          labelText: 'Contact Number',
+                          hintStyle: TextStyle(
+                              textBaseline: TextBaseline.alphabetic,
+                              color: Color.fromARGB(255, 134, 85, 85))),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  SizedBox(
+                    width: 300,
+                    child: TextField(
+                      controller: emailController,
+                      obscureText: false,
+                      decoration: const InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black),
+                          ),
+                          labelText: 'Email',
+                          hintStyle: TextStyle(
+                              textBaseline: TextBaseline.alphabetic,
+                              color: Color.fromARGB(255, 134, 85, 85))),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  SizedBox(
+                    width: 300,
+                    child: TextField(
+                      controller: genderController,
+                      obscureText: false,
+                      decoration: const InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black),
+                          ),
+                          labelText: 'Gender',
+                          hintStyle: TextStyle(
+                              textBaseline: TextBaseline.alphabetic,
+                              color: Color.fromARGB(255, 134, 85, 85))),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  SizedBox(
+                    width: 300,
+                    child: TextField(
+                      controller: passwordController,
+                      obscureText: false,
+                      decoration: const InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black),
+                          ),
+                          labelText: 'Password',
+                          hintStyle: TextStyle(
+                              textBaseline: TextBaseline.alphabetic,
+                              color: Color.fromARGB(255, 134, 85, 85))),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  SizedBox(
+                    width: 300,
+                    child: TextField(
+                      controller: confirmPasswordController,
+                      obscureText: false,
+                      decoration: const InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black),
+                          ),
+                          labelText: 'Confirm Password',
+                          hintStyle: TextStyle(
+                              textBaseline: TextBaseline.alphabetic,
+                              color: Color.fromARGB(255, 134, 85, 85))),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 70,
+                  ),
+                  OutlinedButton(
+                    onPressed: _signUp,
+                    child: const Text("SignUp"),
+                  ),
+                  const SizedBox(
+                    height: 80,
+                  )
+                ],
               ),
-              Container(
-                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                child: Text(
-                  "Please Enter SignUp Details...",
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.acme(
-                      textStyle: const TextStyle(
-                          color: Colors.white,
-                          letterSpacing: 1,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 30)),
-                ),
-              ),
-              const SizedBox(
-                height: 70,
-              ),
-              SizedBox(
-                width: 300,
-                child: TextField(
-                  controller: usernameController,
-                  obscureText: false,
-                  decoration: const InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
-                      labelText: 'UserName',
-                      hintStyle: TextStyle(
-                          textBaseline: TextBaseline.alphabetic,
-                          color: Color.fromARGB(255, 134, 85, 85))),
-                ),
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              SizedBox(
-                width: 300,
-                child: TextField(
-                  controller: nameController,
-                  obscureText: false,
-                  decoration: const InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
-                      labelText: 'Name',
-                      hintStyle: TextStyle(
-                          textBaseline: TextBaseline.alphabetic,
-                          color: Color.fromARGB(255, 134, 85, 85))),
-                ),
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              SizedBox(
-                width: 300,
-                child: TextField(
-                  controller: contactNumberController,
-                  obscureText: false,
-                  decoration: const InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
-                      labelText: 'Contact Number',
-                      hintStyle: TextStyle(
-                          textBaseline: TextBaseline.alphabetic,
-                          color: Color.fromARGB(255, 134, 85, 85))),
-                ),
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              SizedBox(
-                width: 300,
-                child: TextField(
-                  controller: emailController,
-                  obscureText: false,
-                  decoration: const InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
-                      labelText: 'Email',
-                      hintStyle: TextStyle(
-                          textBaseline: TextBaseline.alphabetic,
-                          color: Color.fromARGB(255, 134, 85, 85))),
-                ),
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              SizedBox(
-                width: 300,
-                child: TextField(
-                  controller: genderController,
-                  obscureText: false,
-                  decoration: const InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
-                      labelText: 'Gender',
-                      hintStyle: TextStyle(
-                          textBaseline: TextBaseline.alphabetic,
-                          color: Color.fromARGB(255, 134, 85, 85))),
-                ),
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              SizedBox(
-                width: 300,
-                child: TextField(
-                  controller: passwordController,
-                  obscureText: false,
-                  decoration: const InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
-                      labelText: 'Password',
-                      hintStyle: TextStyle(
-                          textBaseline: TextBaseline.alphabetic,
-                          color: Color.fromARGB(255, 134, 85, 85))),
-                ),
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              SizedBox(
-                width: 300,
-                child: TextField(
-                  controller: confirmPasswordController,
-                  obscureText: false,
-                  decoration: const InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
-                      labelText: 'Confirm Password',
-                      hintStyle: TextStyle(
-                          textBaseline: TextBaseline.alphabetic,
-                          color: Color.fromARGB(255, 134, 85, 85))),
-                ),
-              ),
-              const SizedBox(
-                height: 70,
-              ),
-              OutlinedButton(
-                onPressed: _signUp,
-                child: const Text("SignUp"),
-              ),
-              const SizedBox(
-                height: 80,
-              )
-            ],
+            ),
           ),
-        ),
-      ),
-    ));
+        ));
   }
 }
