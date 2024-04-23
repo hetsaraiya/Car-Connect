@@ -115,16 +115,16 @@ class _AvailableRidesState extends State<AvailableRides> {
         child: SafeArea(
             child: Column(
           children: [
-            const SizedBox(height: 100),
-            // SizedBox(
-            //   child: Image.asset(
-            //     "assets/images/give.jpg",
-            //     width: 257,
-            //     height: 257,
-            //     fit: BoxFit.cover,
-            //     colorBlendMode: BlendMode.lighten,
-            //   ),
-            // ),
+            const SizedBox(height: 40),
+            SizedBox(
+              child: Image.asset(
+                "assets/images/give.jpg",
+                width: 257,
+                height: 257,
+                fit: BoxFit.cover,
+                colorBlendMode: BlendMode.lighten,
+              ),
+            ),
             const SizedBox(
               height: 120,
             ),
