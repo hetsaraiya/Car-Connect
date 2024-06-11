@@ -128,18 +128,18 @@ def makeRequest(request):
         geolocator = MapQuest(api_key=KEY)
         destination_location = geolocator.geocode(destination)
         # isDeleted = request.POST.get("isDeleted")
-        new = ServiceRequest.objects.get(user=users.pk).exists()
-        print(new)
-        if not new:
-            servicerequest.user = users
-            servicerequest.presenet_loc_longitude = presenet_loc_longitude
-            servicerequest.presenet_loc_latitude = presenet_loc_latitude
-            servicerequest.destination_loc_longitude = destination_location.longitude
-            servicerequest.destination_loc_latitude = destination_location.latitude
-            # servicerequest.isDeleted = 
-            servicerequest.save()
+        if ServiceRequest.objects.get(user=users.pk):
+            return HttpResponse(json.dumps({"msg" : "Already Exists"}))
 
-            return HttpResponse(json.dumps({"msg": "Ride availed"}))
+        servicerequest.user = users
+        servicerequest.presenet_loc_longitude = presenet_loc_longitude
+        servicerequest.presenet_loc_latitude = presenet_loc_latitude
+        servicerequest.destination_loc_longitude = destination_location.longitude
+        servicerequest.destination_loc_latitude = destination_location.latitude
+        # servicerequest.isDeleted = 
+        servicerequest.save()
+
+        return HttpResponse(json.dumps({"msg": "Ride availed"}))
     
     else:
         return HttpResponse(json.dumps({"msg": "Bad Request"}))
